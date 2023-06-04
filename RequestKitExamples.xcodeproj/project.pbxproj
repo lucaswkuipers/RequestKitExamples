@@ -11,7 +11,7 @@
 		A073D0952A05771D00C233DA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A073D0942A05771D00C233DA /* ContentView.swift */; };
 		A073D0972A05771D00C233DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A073D0962A05771D00C233DA /* Assets.xcassets */; };
 		A073D09B2A05771D00C233DA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A073D09A2A05771D00C233DA /* Preview Assets.xcassets */; };
-		A098BB4B2A05795E0033920D /* RequestKit in Frameworks */ = {isa = PBXBuildFile; productRef = A098BB4A2A05795E0033920D /* RequestKit */; };
+		A0F4316F2A2CA1A800381F20 /* RequestKit in Frameworks */ = {isa = PBXBuildFile; productRef = A0F4316E2A2CA1A800381F20 /* RequestKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,7 +21,7 @@
 		A073D0962A05771D00C233DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A073D0982A05771D00C233DA /* RequestKitExamples.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RequestKitExamples.entitlements; sourceTree = "<group>"; };
 		A073D09A2A05771D00C233DA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		A073D0A22A05779B00C233DA /* RequestKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = RequestKit; path = ../RequestKit; sourceTree = "<group>"; };
+		A0F4316D2A2CA17C00381F20 /* RequestKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = RequestKit; path = ../RequestKit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +29,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A098BB4B2A05795E0033920D /* RequestKit in Frameworks */,
+				A0F4316F2A2CA1A800381F20 /* RequestKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A01427332A2B7F8600957F89 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				A0F4316D2A2CA17C00381F20 /* RequestKit */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		A073D0862A05771D00C233DA = {
 			isa = PBXGroup;
 			children = (
-				A073D0A12A05779B00C233DA /* Packages */,
+				A01427332A2B7F8600957F89 /* Packages */,
 				A073D0912A05771D00C233DA /* RequestKitExamples */,
 				A073D0902A05771D00C233DA /* Products */,
 				A098BB492A05795E0033920D /* Frameworks */,
@@ -74,14 +82,6 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		A073D0A12A05779B00C233DA /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				A073D0A22A05779B00C233DA /* RequestKit */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		A098BB492A05795E0033920D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -103,11 +103,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				A098BB4D2A0579650033920D /* PBXTargetDependency */,
+				A01427362A2B806F00957F89 /* PBXTargetDependency */,
 			);
 			name = RequestKitExamples;
 			packageProductDependencies = (
-				A098BB4A2A05795E0033920D /* RequestKit */,
+				A0F4316E2A2CA1A800381F20 /* RequestKit */,
 			);
 			productName = RequestKitExamples;
 			productReference = A073D08F2A05771D00C233DA /* RequestKitExamples.app */;
@@ -171,9 +171,9 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		A098BB4D2A0579650033920D /* PBXTargetDependency */ = {
+		A01427362A2B806F00957F89 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = A098BB4C2A0579650033920D /* RequestKit */;
+			productRef = A01427352A2B806F00957F89 /* RequestKit */;
 		};
 /* End PBXTargetDependency section */
 
@@ -387,11 +387,11 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		A098BB4A2A05795E0033920D /* RequestKit */ = {
+		A01427352A2B806F00957F89 /* RequestKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RequestKit;
 		};
-		A098BB4C2A0579650033920D /* RequestKit */ = {
+		A0F4316E2A2CA1A800381F20 /* RequestKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RequestKit;
 		};

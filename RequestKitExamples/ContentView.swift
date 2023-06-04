@@ -1,25 +1,24 @@
 import SwiftUI
-import RequestKit
 
 struct ContentView: View {
-    @State var response = "What do you want to know?"
-    @State var prompt = ""
-
-    @State var service = ChatService()
-
     var body: some View {
-        VStack {
-            Text(response)
-            TextField("Ask me something...", text: $prompt)
-                .onSubmit {
-                    service.fetchAnswer(for: prompt) { answer in
-                        guard let answer else { return }
-                        self.response = answer
-                    }
-                    prompt = ""
-                }
+        Button("Send request") {
+            Task {
+                let response = await URL(string: "https://api.openai.com/v1/chat/completions")?
+                    .request
+                    .method(.post)
+                    .authorizationBearer("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")
+                    .contentType(.json)
+                    .body(ChatCompletionRequest(model: .gpt_3, messages: [.init(role: .user, content: "My name is Lucas. What is my name?")]).encoded())
+                    .perform()?
+                    .data
+                    .decoded(of: ChatCompletionResponse.self)?
+                    .choices.first?.message.content
+
+                print(response?.debugDescription)
+            }
         }
-        .padding()
+        .buttonStyle(.borderedProminent)
     }
 }
 
@@ -29,103 +28,42 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-struct ChatService {
-    let name = "ChatGPT"
-    lazy var preText = "The following is a chat between someone and \(name)"
+import RequestKit
 
-    lazy var conversation = preText
-    lazy var api = OpenAICompletionAPI(
-        model: "text-davinci-003",
-        temperature: 0.9,
-        maxTokens: 150,
-        topP: 1,
-        frequencyPenalty: 0.1,
-        presencePenalty: 0.6,
-        stop: [" Someone:", "\(name):"]
-    )
-
-    mutating func fetchAnswer(for prompt: String, completion: @escaping (String?) -> Void) {
-        conversation +=
-"""
-Someone: \(prompt)
-\(name):
-""" + " "
-        api.fetchCompletion(for: conversation) {
-            completion($0?.choices.first?.text)
-        }
-    }
-}
-
-struct OpenAICompletionAPI {
-    let model: String
-    let temperature: Double
-    let maxTokens: Int
-    let topP: Double
-    let frequencyPenalty: Double
-    let presencePenalty: Double
-    let stop: [String]
-
-    let apiKey = "replace-with-your-api-key"
-
-    func fetchCompletion(for prompt: String, completion: @escaping (OpenAICompletionAPIResponse?) -> Void) {
-        URL(string: "https://api.openai.com/v1/completions")?
-            .request
-            .method(.post)
-            .contentType(.json)
-            .authorizationBearer(apiKey)
-            .body(
-                [
-                    "model": model,
-                    "prompt": prompt,
-                    "temperature": temperature,
-                    "max_tokens": maxTokens,
-                    "top_p": topP,
-                    "frequency_penalty": frequencyPenalty,
-                    "presence_penalty": presencePenalty,
-                    "stop": stop
-                ]
-            )
-            .perform { (result: Result<OpenAICompletionAPIResponse, Error>) in
-                switch result {
-                case .success(let success):
-                    print("Got API response: \(success)")
-                    completion(success)
-                case .failure(let error):
-                    print("Failed to get API response: \(error)")
-                }
-            }
-    }
-}
-
-struct OpenAICompletionAPIResponse: Decodable {
-    struct Choice: Decodable {
-        let finishReason: String
-        let index: Int
-        let logprobs: String?
-        let text: String
-
-        enum CodingKeys: String, CodingKey {
-            case finishReason = "finish_reason"
-            case index, logprobs, text
-        }
-    }
-
-    struct Usage: Decodable {
-        let completionTokens: Int
-        let promptTokens: Int
-        let totalTokens: Int
-
-        enum CodingKeys: String, CodingKey {
-            case completionTokens = "completion_tokens"
-            case promptTokens = "prompt_tokens"
-            case totalTokens = "total_tokens"
-        }
-    }
-
+struct ChatCompletionResponse: Decodable {
     let choices: [Choice]
-    let created: Int
-    let id: String
-    let model: String
-    let object: String
-    let usage: Usage
+
+    struct Choice: Decodable {
+        let message: RemoteMessage
+    }
+}
+
+struct RemoteMessage: Codable {
+    let role: Role
+    let content: String
+
+    enum Role: String, Codable {
+        case system
+        case user
+        case assistant
+    }
+}
+
+struct ChatCompletionRequest: Encodable {
+    let model: Model
+    let messages: [RemoteMessage]
+
+    enum Model: String, Encodable {
+        case gpt_4 = "gpt-4"
+        case gpt_3 = "gpt-3.5-turbo"
+    }
+}
+
+import Foundation
+
+extension Data {
+    func describe() {
+        let json = try? JSONSerialization.jsonObject(with: self, options: [])
+        print(json.debugDescription)
+    }
 }
