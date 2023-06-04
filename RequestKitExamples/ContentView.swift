@@ -7,15 +7,18 @@ struct ContentView: View {
                 let response = await URL(string: "https://api.openai.com/v1/chat/completions")?
                     .request
                     .method(.post)
-                    .authorizationBearer("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")
+                    .authorizationBearer("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")
                     .contentType(.json)
                     .body(ChatCompletionRequest(model: .gpt_3, messages: [.init(role: .user, content: "My name is Lucas. What is my name?")]).encoded())
                     .perform()?
                     .data
                     .decoded(of: ChatCompletionResponse.self)?
-                    .choices.first?.message.content
+                    .choices
+                    .first?
+                    .message
+                    .content
 
-                print(response?.debugDescription)
+                print(response)
             }
         }
         .buttonStyle(.borderedProminent)
